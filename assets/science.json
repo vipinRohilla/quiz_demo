@@ -1,0 +1,88 @@
+[
+    {
+        "1": "Who is honored as Father of Modern Chemistry?",
+        "2": "Who invented periodic table?",
+        "3": "Which is the most abundant gas in the earth's atmosphere?",
+        "4": "Which gas evolved from  paddy fields and marshes?",
+        "5": "Which toxic element present in automobile exhausts?",
+        "6": "Which gases cause acid rain?",
+        "7": "Which metal is used in the making of microchips?",
+        "8": "What is the toxicity caused by silicon called?",
+        "9": "Which polymer is used to manufacture electric switches, computer disks etc.?",
+        "10": "With which polymer, the cabinets of radio and TV made of?"
+    },
+    {
+        "1": {
+            "a": "Antoine Lavoisier",
+            "b": "Nitrogen",
+            "c": "Mendeleev",
+            "d": "Dmitri"
+        },
+        "2": {
+            "a": "Dmitri Mendeleev",
+            "b": "Lavoisier",
+            "c": "Mendeleev",
+            "d": "Antoine"
+        },
+        "3": {
+            "a": "Nitrogen (78.08%)",
+            "b": "Methane",
+            "c": "Sulphur",
+            "d": "function"
+        },
+        "4": {
+            "a": "Methane",
+            "b": "Nitrogen",
+            "c": "Sulphur",
+            "d": "Lead"
+        },
+        "5": {
+            "a": "Lead",
+            "b": "Sulphur",
+            "c": "Nitrogen",
+            "d": "Methane"
+        },
+        "6": {
+            "a": "Sulphur dioxide",
+            "b": "Silicon",
+            "c": "dioxide",
+            "d": "Silicosis"
+        },
+        "7": {
+            "a": "Silicon",
+            "b": "Sulphur",
+            "c": "Silicosis",
+            "d": "dioxide"
+        },
+        "8": {
+            "a": "Silicosis",
+            "b": "Sulphur",
+            "c": "dioxide",
+            "d": "Nitrogen"
+        },
+        "9": {
+            "a": "Bakelite",
+            "b": "Nitrogen",
+            "c": "Sulphur",
+            "d": "fiSilicosisnd"
+        },
+        "10": {
+            "a": "Polystyrene",
+            "b": "Silicosis",
+            "c": "Sulphur",
+            "d": "Bakelite"
+        }
+    },
+    {
+        "1": "Antoine Lavoisier",
+        "2": "Dmitri Mendeleev",
+        "3": "Nitrogen (78.08%)",
+        "4": "Methane",
+        "5": "Lead",
+        "6": "Sulphur dioxide",
+        "7": "Silicon",
+        "8": "Silicosis",
+        "9": "Bakelite",
+        "10": "Polystyrene"
+    }
+]

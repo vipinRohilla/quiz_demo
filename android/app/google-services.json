@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "700825803700",
+    "project_id": "quizapp-fce60",
+    "storage_bucket": "quizapp-fce60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700825803700:android:7b96586fdc6bd85c2bb0e1",
+        "android_client_info": {
+          "package_name": "com.example.quiz_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700825803700-e1qd8p9ib1gfdmi04hhv1liatm83fmr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClaB_zYQjMTY12mMrkDeeLm3APGh7FkSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700825803700-e1qd8p9ib1gfdmi04hhv1liatm83fmr6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "700825803700-6iemnjm3070ujqn0fp6jmrqs2s9fr65v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quizApplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
