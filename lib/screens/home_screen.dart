@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quiz_application/widgets/custom_card.dart';
@@ -19,14 +17,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.asset("assets/74.mp4")..initialize().then((_){
-      controller.setLooping(true);
-      Timer(const Duration(milliseconds: 100), () {
-        setState(() {
-          controller.play();
-        });
-      });
-    });
+    // controller = VideoPlayerController.asset("assets/75.mp4")..initialize().then((_){
+    //   controller.setLooping(true);
+    //   Timer(const Duration(milliseconds: 100), () {
+    //     setState(() {
+    //       controller.play();
+    //     });
+    //   });
+    // });
     
   }
 
@@ -46,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: const Text("QUIZ APP"),
+        automaticallyImplyLeading: false,
         elevation: 0.2,
       ),
       body: Stack(
@@ -54,10 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
           // VideoPlayer(controller),
         // ListView(
           // children: [
-          //   customCard("python", context),
-          //   customCard("science", context),
-          //   customCard("Javascript", context),
-          //   customCard("C++", context),
+            //customCard("python", context),
+            //customCard("science", context),
+            //customCard("javascript", context),
+           //customCard("C++", context),
           //   ],
           // children: 
           ListView.builder(

@@ -8,12 +8,13 @@
   int i = 1;
   double timer = 0.0;
   String showTimer = "0.1";
+  Color white = Colors.white;
 
    Map<String, Color> buttonColor = {
-    'a': Colors.white,
-    'b': Colors.white,
-    'c': Colors.white,
-    'd': Colors.white,
+    'a': white,
+    'b': white,
+    'c': white,
+    'd': white,
   };
   bool cancelTimer = false;
 

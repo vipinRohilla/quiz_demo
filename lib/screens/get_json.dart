@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:quiz_application/screens/quiz_screen.dart';
 
@@ -20,7 +19,7 @@ class GetJson extends StatelessWidget {
 
         if (snapshot.hasError) {
           return const Center(
-            child: Text('error fatch'),
+            child: Text('error fetch'),
           );
         }
 

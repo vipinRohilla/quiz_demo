@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_application/screens/get_json.dart';
+import 'package:quiz_application/widgets/alert_box.dart';
 
 class AddNote extends StatefulWidget {
   final String json;
-  const 
-  AddNote({Key? key, required this.json}) : super(key: key);
+  const AddNote({Key? key, required this.json}) : super(key: key);
 
   @override
   State<AddNote> createState() => _AddNoteState();
@@ -27,7 +27,6 @@ class _AddNoteState extends State<AddNote> {
         OutlineInputBorder(borderSide: Divider.createBorderSide(context));
     return Scaffold(
       appBar: AppBar(
-        
         title: const Text("Add Note"),
       ),
       body: Column(
@@ -62,9 +61,8 @@ class _AddNoteState extends State<AddNote> {
           ),
           TextButton(
               style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all(Size(
-                  MediaQuery.of(context).size.width-200
-                  , 60)),
+                fixedSize: MaterialStateProperty.all(
+                    Size(MediaQuery.of(context).size.width - 200, 60)),
                 padding: MaterialStateProperty.all(
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
                 backgroundColor: MaterialStateProperty.all(Colors.blue),
@@ -72,8 +70,10 @@ class _AddNoteState extends State<AddNote> {
               ),
               onPressed: () async {
                 if (_description.text == "") {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Fill the text field")));
+                  return showAlertBox("Alert", "Please fill the text field", context);
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text("Fill the text field")));
+
                 } else {
                   setState(() {
                     _isLoading = true;
@@ -84,19 +84,22 @@ class _AddNoteState extends State<AddNote> {
                   await FirebaseFirestore.instance.collection("post").add(data);
                   setState(() {
                     _isLoading = false;
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => GetJson(myJson : widget.json)));
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => GetJson(myJson: widget.json),
+                      ),
+                    );
                   });
                 }
               },
               child: _isLoading == true
                   ? Container(
-                    height: 60,
-                    alignment: Alignment.center,
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white),
-                    ),
-                  )
+                      height: 60,
+                      alignment: Alignment.center,
+                      child: const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      ),
+                    )
                   : const Text("Submit"))
         ],
       ),

@@ -9,7 +9,7 @@ import 'package:quiz_application/widgets/choice_button.dart';
 import 'package:video_player/video_player.dart';
 
 class QuizScreen extends StatefulWidget {
-  final mydata;
+  final List mydata;
   const QuizScreen({Key? key, required this.mydata}) : super(key: key);
 
   @override
@@ -50,20 +50,23 @@ class _QuizScreenState extends State<QuizScreen> {
     timer = 0.0;
     if (mounted) {
       setState(() {
-        print(colorToShow);
+        // print(colorToShow);
         if(colorToShow == Colors.red){
             i = i;
         }
-        else if (i < 5){
+        else if (i < 10){
           i++;
-        } else if(i == 5) {
+        } else if(i == 10) {
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const HomeScreen()));
         }
-        buttonColor['a'] = Colors.white;
-        buttonColor['b'] = Colors.white;
-        buttonColor['c'] = Colors.white;
-        buttonColor['d'] = Colors.white;
+        for (var element in options) {
+          buttonColor[element] = white;
+        }
+        // buttonColor['a'] = Colors.white;
+        // buttonColor['b'] = Colors.white;
+        // buttonColor['c'] = Colors.white;
+        // buttonColor['d'] = Colors.white;
       });
     }
     startTimer();
@@ -89,7 +92,7 @@ class _QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
     startTimer();
-    controller = VideoPlayerController.asset("assets/74.mp4")..initialize().then((_){
+    controller = VideoPlayerController.asset("assets/75.mp4")..initialize().then((_){
       setState(() {
       });
 
@@ -144,7 +147,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 height: 20,
               ),
               Flexible(
-                flex: 3,
+                flex: 4,
                 child: Container(
                     padding: const EdgeInsets.all(15.0),
                     alignment: Alignment.center,
@@ -170,10 +173,14 @@ class _QuizScreenState extends State<QuizScreen> {
                       // onAnimationEnd: () => nextQuestion,
                       restartAnimation: true,
                       center: Text(
-                        "${(timer * 10 + 1) ~/ 1}",
+                        (timer*10+1 <= 9) 
+                        ? 
+                        "0:0${(timer * 10 + 1) ~/ 1}" 
+                        :
+                        "0:${(timer * 10 + 1) ~/ 1}",
                         style: const TextStyle(
                             fontSize: 36,
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
                       radius: 75,
