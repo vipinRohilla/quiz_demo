@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:quiz_application/global/global_variables.dart';
-import 'package:quiz_application/screens/home_screen.dart';
+import 'package:quiz_application/model/choice_button_model.dart';
+import 'package:quiz_application/screens/result_screen.dart';
 import 'package:quiz_application/widgets/choice_button.dart';
+import 'package:quiz_application/widgets/circular_percent_indicator.dart';
 import 'package:video_player/video_player.dart';
+
+import '../global/global_variables.dart';
 
 class QuizScreen extends StatefulWidget {
   final List mydata;
@@ -19,12 +22,11 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   late VideoPlayerController controller;
 
-
   // final mydata;
   // _QuizScreenState(this.mydata);
+  List timings = [];
 
- 
- void startTimer() async {
+  void startTimer() async {
     const onesecond = Duration(milliseconds: 1000);
 
     Timer.periodic(onesecond, (Timer t) {
@@ -47,19 +49,24 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void nextQuestion() {
     cancelTimer = false;
+    timings.add(timer);
     timer = 0.0;
     if (mounted) {
       setState(() {
         // print(colorToShow);
-        if(colorToShow == Colors.red){
-            i = i;
-        }
-        else if (i < 10){
+        if (colorToShow == Colors.red) {
+          i = i;
+          // marks = marks-3;
+          setMarks = marks - 3;
+        } else if (i < 10) {
           i++;
-        } else if(i == 10) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+        } else if (i == 10) {
+          navigateToTheOtherScreen(
+              context, ResultScreen(marks: marks, timings: timings));
+          // Navigator.of(context).pushReplacement(
+          //     MaterialPageRoute(builder: (context) => ResultScreen(marks: marks, timings : timings)));
         }
+
         for (var element in options) {
           buttonColor[element] = white;
         }
@@ -74,7 +81,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void checkAnswer(String k) {
     if (widget.mydata[2]["1"] == widget.mydata[1]["1"][k]) {
-      marks = marks + 5;
+      setMarks = marks + 10;
+      // marks = marks + 10;
       colorToShow = right;
     } else {
       colorToShow = wrong;
@@ -85,31 +93,27 @@ class _QuizScreenState extends State<QuizScreen> {
         cancelTimer = true;
       });
     }
-    Timer(const Duration(seconds: 1), nextQuestion);
+    Timer(const Duration(milliseconds: 500), nextQuestion);
   }
 
   @override
   void initState() {
     super.initState();
     startTimer();
-    controller = VideoPlayerController.asset("assets/75.mp4")..initialize().then((_){
-      setState(() {
+    controller = VideoPlayerController.asset("assets/75.mp4")
+      ..initialize().then((_) {
+        setState(() {});
       });
-
-    });
     controller.setLooping(true);
     controller.play();
   }
 
-  
-
   @override
   void dispose() {
     controller.dispose();
+    i = 1;
     super.dispose();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -138,10 +142,9 @@ class _QuizScreenState extends State<QuizScreen> {
       },
       child: Scaffold(
         // backgroundColor: Colors.black,
-        body: Stack(
-          children : [
-            VideoPlayer(controller),
-            Column(
+        body: Stack(children: [
+          VideoPlayer(controller),
+          Column(
             children: [
               const SizedBox(
                 height: 20,
@@ -162,64 +165,74 @@ class _QuizScreenState extends State<QuizScreen> {
               Expanded(
                 flex: 4,
                 child: Center(
-                  child: CircularPercentIndicator(
-                      animation: true,
-                      backgroundWidth: 1,
-                      animationDuration: 10000,
-                      linearGradient: const LinearGradient(
-                          colors: [Colors.red, Colors.pink, Colors.purple]),
-                      rotateLinearGradient: true,
-                      // animateFromLastPercent:  true,
-                      // onAnimationEnd: () => nextQuestion,
-                      restartAnimation: true,
-                      center: Text(
-                        (timer*10+1 <= 9) 
-                        ? 
-                        "0:0${(timer * 10 + 1) ~/ 1}" 
-                        :
-                        "0:${(timer * 10 + 1) ~/ 1}",
-                        style: const TextStyle(
-                            fontSize: 36,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      radius: 75,
-                      lineWidth: 15,
-                      backgroundColor: const Color.fromARGB(255, 233, 232, 232),
-                      circularStrokeCap: CircularStrokeCap.round,
-                      percent: cancelTimer ? 0.0 : 1.0),
+                  child: 
+                  // CircularPercentIndicator(
+                  //     animation: true,
+                  //     backgroundWidth: 1,
+                  //     animationDuration: 10000,
+                  //     linearGradient: const LinearGradient(
+                  //         colors: [Colors.red, Colors.pink, Colors.purple]),
+                  //     rotateLinearGradient: true,
+                  //     // animateFromLastPercent:  true,
+                  //     // onAnimationEnd: () => nextQuestion,
+                  //     restartAnimation: true,
+                  //     center: Text(
+                  //       (timer * 10 + 1 <= 9)
+                  //           ? "0:0${(timer * 10 + 1) ~/ 1}"
+                  //           : "0:${(timer * 10 + 1) ~/ 1}",
+                  //       style: const TextStyle(
+                  //           fontSize: 36,
+                  //           color: Colors.white,
+                  //           fontWeight: FontWeight.bold),
+                  //     ),
+                  //     radius: 75,
+                  //     lineWidth: 15,
+                  //     backgroundColor: const Color.fromARGB(255, 233, 232, 232),
+                  //     circularStrokeCap: CircularStrokeCap.round,
+                  //     percent: cancelTimer ? 0.0 : 1.0),
+                  MyCircularPercentIndicator(isResultScreen: false, timer: timer, cancelTimer: cancelTimer,)
                 ),
               ),
               Expanded(
-                flex: 11,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-                  itemCount: options.length,
-                   itemBuilder: (context, index){
-                     return ChoiceButton(k: options[index], color: optionsColors[index], mydata: widget.mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor);
-                   })
-                
-                // GridView(
-                //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                //   crossAxisCount: 2),
-                //   // mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                // ChoiceButton(k: 'a', color: Colors.yellow, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
-                // ChoiceButton(k: 'b', color: Colors.blue, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
-                // ChoiceButton(k: 'c', color: Colors.green, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
-                // ChoiceButton(k: 'd', color: Colors.red, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
-                // // choiceButton('a', Colors.yellow, mydata, checkAnswer,i,buttonColor),
-                // // choiceButton('b', Colors.blue, mydata, checkAnswer,i,buttonColor),
-                // // choiceButton('c', Colors.green, mydata, checkAnswer,i,buttonColor),
-                // // choiceButton('d', Colors.red, mydata, checkAnswer,i,buttonColor)
-                //   ],
-                // ),
-              ),
+                  flex: 11,
+                  child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2),
+                      itemCount: options.length,
+                      itemBuilder: (context, index) {
+                        ChoiceButtonModel passModel = ChoiceButtonModel(
+                            k: options[index],
+                            color: optionsColors[index],
+                            mydata: widget.mydata,
+                            checkAnswer: checkAnswer,
+                            i: i,
+                            buttonColor: buttonColor);
+                        return ChoiceButton(passModel: passModel
+                            //  k: options[index], color: optionsColors[index], mydata: widget.mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor
+
+                            );
+                      })
+
+                  // GridView(
+                  //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 2),
+                  //   // mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  // ChoiceButton(k: 'a', color: Colors.yellow, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
+                  // ChoiceButton(k: 'b', color: Colors.blue, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
+                  // ChoiceButton(k: 'c', color: Colors.green, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
+                  // ChoiceButton(k: 'd', color: Colors.red, mydata: mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor),
+                  // // choiceButton('a', Colors.yellow, mydata, checkAnswer,i,buttonColor),
+                  // // choiceButton('b', Colors.blue, mydata, checkAnswer,i,buttonColor),
+                  // // choiceButton('c', Colors.green, mydata, checkAnswer,i,buttonColor),
+                  // // choiceButton('d', Colors.red, mydata, checkAnswer,i,buttonColor)
+                  //   ],
+                  // ),
+                  ),
             ],
           ),
-          ]
-        ),
+        ]),
       ),
     );
   }

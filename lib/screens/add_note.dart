@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:quiz_application/global/global_variables.dart';
 import 'package:quiz_application/screens/get_json.dart';
 import 'package:quiz_application/widgets/alert_box.dart';
 
@@ -25,6 +26,7 @@ class _AddNoteState extends State<AddNote> {
   Widget build(BuildContext context) {
     final inputborder =
         OutlineInputBorder(borderSide: Divider.createBorderSide(context));
+    // Color blue = Colors.blue;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Note"),
@@ -70,7 +72,8 @@ class _AddNoteState extends State<AddNote> {
               ),
               onPressed: () async {
                 if (_description.text == "") {
-                  return showAlertBox("Alert", "Please fill the text field", context);
+                  return showAlertBox(
+                      "Alert", "Please fill the text field", context);
                   // ScaffoldMessenger.of(context).showSnackBar(
                   //     const SnackBar(content: Text("Fill the text field")));
 
@@ -84,11 +87,13 @@ class _AddNoteState extends State<AddNote> {
                   await FirebaseFirestore.instance.collection("post").add(data);
                   setState(() {
                     _isLoading = false;
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => GetJson(myJson: widget.json),
-                      ),
-                    );
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => GetJson(myJson: widget.json),
+                    //   ),
+                    // );
+                    navigateToTheOtherScreen(
+                        context, GetJson(myJson: widget.json));
                   });
                 }
               },
