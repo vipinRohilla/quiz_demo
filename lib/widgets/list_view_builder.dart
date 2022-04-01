@@ -8,11 +8,12 @@ class MyListViewBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        shrinkWrap: true,
         itemCount: timings.length / 2 ~/1,
         itemBuilder: (context, index) => ListTile(
               title: Text('Question ${startingIndex + index+1}'),
               trailing: Text(
-                '${timings[startingIndex+index] * 10} sec',
+                '${timings[startingIndex+index] * 10~/1} sec',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ));

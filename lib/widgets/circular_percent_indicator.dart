@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+// import 'package:quiz_application/global/global_variables.dart';
 
 class MyCircularPercentIndicator extends StatelessWidget {
   final double timer;
@@ -9,20 +10,22 @@ class MyCircularPercentIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(marks);
     return CircularPercentIndicator(
                       animation: true,
                       backgroundWidth: isResultScreen ? 15 : 1,
                       animationDuration: isResultScreen ? 1000 : 10000,
                       linearGradient: const LinearGradient(
                           colors: [Colors.red, Colors.pink, Colors.purple]),
-                      rotateLinearGradient: true,
+                      // rotateLinearGradient: true,
                       // animateFromLastPercent:  true,
                       // onAnimationEnd: () => nextQuestion,
                       restartAnimation: true,
                       center: Text(
                         isResultScreen 
                         ? 
-                        (timer * 10 + 1 <= 9) ? "${(timer) ~/ 1}" : "${(timer) ~/ 1}"
+                        // (timer * 10 + 1 <= 9) ? "${(timer) ~/ 1}" : 
+                        "${(timer) ~/ 1}"
                         :
                         (timer * 10 + 1 <= 9) ? "0:0${(timer * 10 + 1) ~/ 1}" : "0:${(timer * 10 + 1) ~/ 1}",
                         style: TextStyle(
@@ -35,8 +38,15 @@ class MyCircularPercentIndicator extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 233, 232, 232),
                       circularStrokeCap: CircularStrokeCap.round,
                       percent: 
-                      isResultScreen ? timer/100 :
-                      cancelTimer ? 0.0 : 1.0);
+                      isResultScreen 
+                      ?
+                      (timer <= 0.0 ? 0.0 : 
+                      
+                      timer/100
+                      )
+                      :
+                      cancelTimer ? 0.0 : 1.0
+                      );
   }
 }
 

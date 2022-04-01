@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_application/global/global_variables.dart';
+import 'package:quiz_application/model/user_model.dart';
 import 'package:quiz_application/screens/get_json.dart';
 import 'package:quiz_application/widgets/alert_box.dart';
 
@@ -38,6 +39,15 @@ class _AddNoteState extends State<AddNote> {
           const SizedBox(
             height: 20,
           ),
+          Text(widget.json.toUpperCase() + " QUIZ",
+          style: const TextStyle( 
+            fontWeight: FontWeight.bold,
+            fontSize: 30
+          ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           const Text(
             "You can add some note or description",
             textAlign: TextAlign.left,
@@ -71,7 +81,9 @@ class _AddNoteState extends State<AddNote> {
                 foregroundColor: MaterialStateProperty.all(Colors.white),
               ),
               onPressed: () async {
-                if (_description.text == "") {
+
+                //taking care of the empty description and description with blank spaces only
+                if (_description.text.trim().isEmpty) {
                   return showAlertBox(
                       "Alert", "Please fill the text field", context);
                   // ScaffoldMessenger.of(context).showSnackBar(
@@ -81,10 +93,12 @@ class _AddNoteState extends State<AddNote> {
                   setState(() {
                     _isLoading = true;
                   });
-                  Map<String, dynamic> data = {
-                    "description": _description.text
-                  };
-                  await FirebaseFirestore.instance.collection("post").add(data);
+
+                  //storing the value of description in user_model and then converting it to json using custom toJson method
+                  User user = User(description: _description.text);
+                  await FirebaseFirestore.instance.collection("post").add(user.toJson());
+
+                  //stopping the loading
                   setState(() {
                     _isLoading = false;
                     // Navigator.of(context).pushReplacement(
@@ -92,20 +106,26 @@ class _AddNoteState extends State<AddNote> {
                     //     builder: (context) => GetJson(myJson: widget.json),
                     //   ),
                     // );
+
+                    //if loading stops it will redirect you to the QuizScreen
                     navigateToTheOtherScreen(
                         context, GetJson(myJson: widget.json));
                   });
                 }
               },
+
+              //if loading is true it will show circularIndicator otherwise it will show Submit text on
               child: _isLoading == true
-                  ? Container(
+                  ? 
+                  Container(
                       height: 60,
                       alignment: Alignment.center,
                       child: const Center(
                         child: CircularProgressIndicator(color: Colors.white),
                       ),
                     )
-                  : const Text("Submit"))
+                  : 
+                  const Text("Submit"))
         ],
       ),
     );

@@ -12,7 +12,7 @@ import 'package:quiz_application/widgets/custom_card.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  final List _topics = ["python", "science", "javascript", "c++"];
+  final List _listOftopics = ["python", "science", "javascript", "c++"];
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,9 @@ class HomeScreen extends StatelessWidget {
         elevation: 0.2,
       ),
       body: ListView.builder(
-          itemCount: _topics.length,
+          itemCount: _listOftopics.length,
           itemBuilder: (context, index) {
-            return CustomCard(languageName: _topics[index], context: context);
+            return CustomCard(languageName: _listOftopics[index], context: context);
             // customCard(_topics[index], context);
           }),
     );

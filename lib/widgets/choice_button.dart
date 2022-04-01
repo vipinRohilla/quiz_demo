@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:quiz_application/model/choice_button_model.dart';
 
@@ -26,30 +28,95 @@ class ChoiceButton extends StatefulWidget {
 
 class _ChoiceButtonState extends State<ChoiceButton>
     with SingleTickerProviderStateMixin {
+      // late bool _loadingInProgress;
+  late final String mytext;
+  final double _padding = 30.0;
+  bool isBack = false;
+
+  // late Animation<double> _angleAnimation;
+  // late Animation<double> _scaleAnimation;
   late AnimationController _controller;
+  late bool _isButtonDisabled;
 
   @override
   void initState() {
     super.initState();
+    _isButtonDisabled = false;
 
     _controller =
-        AnimationController(duration: const Duration(seconds: 5), vsync: this);
+        AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
 
+
+    // _angleAnimation = Tween(begin: 0.0, end: 360.0).animate(_controller)..addListener(() {
+    //     setState(() {
+          
+    //     });
+    //   });
+
+    //   _scaleAnimation = Tween(begin: 1.0, end: 6.0).animate(_controller)..addListener(() {
+    //     setState(() {
+          
+    //     });
+    //   });
+      _controller.addStatusListener((status)async{
+        if(status == AnimationStatus.completed){
+          // if(_loadingInProgress){
+            await _controller.reverse();
+            _controller.stop();
+          // }
+        }
+        else if(status == AnimationStatus.dismissed){
+          // if(_loadingInProgress){
+            _controller.forward();
+          // }
+        }
+      });
+    // _controller.forward();
+
+    // _controller.addListener(() {
+    //   print(_controller.value);
+    // });
+  }
+  void startAnimation(){
     _controller.forward();
-
-    _controller.addListener(() {
-      // print(_controller.value);
-    });
   }
 
+  Color showColor = Colors.white;
+
+  void _checkAnswer(){
+    // startAnimation();
+    _isButtonDisabled = true;
+  widget.passModel.checkAnswer(widget.passModel.k);
+  Timer(const Duration(seconds: 1), (() {
+    _isButtonDisabled = false;
+  }));
+  }
+
+  void _doesNothing(){
+
+  }
+
+  
   @override
   Widget build(BuildContext context) {
+    // double circleWidth = 10.0 * _scaleAnimation.value;
+    // double angleInDegrees = _angleAnimation.value;
+    // if(angleInDegrees >= 180){
+    //   isBack = true;
+    // }else{
+    //   isBack = false;
+    // }
     return Padding(
       padding: EdgeInsets.all(_padding),
       child: MaterialButton(
-        onPressed: () {
-          widget.passModel.checkAnswer(widget.passModel.k);
-        },
+        onPressed:
+         _isButtonDisabled 
+         ? 
+         _doesNothing
+         :
+         _checkAnswer,
+         
+          // widget.passModel.checkAnswer(widget.passModel.k),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -68,7 +135,7 @@ class _ChoiceButtonState extends State<ChoiceButton>
                       fontSize: 20, fontWeight: FontWeight.bold),
                 )),
             Text(
-              widget.passModel.mydata[1][widget.passModel.i.toString()]
+              widget.passModel.mydata[1][widget.passModel.currentQuestion.toString()]
                   [widget.passModel.k],
               textAlign: TextAlign.center,
               style: const TextStyle(
@@ -78,7 +145,10 @@ class _ChoiceButtonState extends State<ChoiceButton>
             ),
           ],
         ),
-        color: widget.passModel.buttonColor[widget.passModel.k],
+        color: 
+        // Colors.white, 
+        widget.passModel.buttonColor[widget.passModel.k],
+        // showColor,
         splashColor: Colors.indigo,
         highlightColor: Colors.indigo[700],
         minWidth: 20.0,
@@ -89,8 +159,6 @@ class _ChoiceButtonState extends State<ChoiceButton>
     );
   }
 }
-
-double _padding = 30.0;
 
 // Widget choiceButton(String k, Color color, List mydata, Function checkAnswer, int i, Map<String,dynamic> buttonColor) {
 //     return AnimatedContainer(
@@ -138,4 +206,3 @@ double _padding = 30.0;
 //         ),
 //       ),
 //     );
-//   }

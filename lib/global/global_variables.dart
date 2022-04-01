@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+
+const double endTime = 0.8;
+const double increaseTimerByOneSecond = 0.1;
+const double decreaseMarksByThree = 3;
+const  double lastQuestionIndex = 10;
+const double addTenMarks = 10;
+const double resetValue = 0.0;
+
 Color colorToShow = Colors.indigoAccent;
 Color right = Colors.green;
 Color wrong = Colors.red;
@@ -10,9 +18,9 @@ set setMarks(marks) {
   _marks = marks;
 }
 
-int i = 1;
+int currentQuestion = 1;
 double timer = 0.0;
-String showTimer = "0.1";
+String showTimer = "0.0";
 Color white = Colors.white;
 
 Map<String, Color> buttonColor = {

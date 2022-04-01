@@ -19,7 +19,7 @@ class GetJson extends StatelessWidget {
 
         if (snapshot.hasError) {
           return const Center(
-            child: Text('error fetch'),
+            child: Text('error fetch')
           );
         }
 

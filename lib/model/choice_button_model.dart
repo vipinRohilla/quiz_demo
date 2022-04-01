@@ -5,7 +5,7 @@ class ChoiceButtonModel {
   Color color;
   List mydata;
   Function checkAnswer;
-  int i;
+  int currentQuestion;
   Map<String, dynamic> buttonColor;
 
   ChoiceButtonModel(
@@ -13,6 +13,6 @@ class ChoiceButtonModel {
       required this.color,
       required this.mydata,
       required this.checkAnswer,
-      required this.i,
+      required this.currentQuestion,
       required this.buttonColor});
 }

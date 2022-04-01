@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+// import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:quiz_application/global/global_variables.dart';
 import 'package:quiz_application/model/choice_button_model.dart';
 import 'package:quiz_application/screens/result_screen.dart';
@@ -25,6 +27,7 @@ class _QuizScreenState extends State<QuizScreen> {
   // final mydata;
   // _QuizScreenState(this.mydata);
   List timings = [];
+  
 
   void startTimer() async {
     const onesecond = Duration(milliseconds: 1000);
@@ -33,13 +36,13 @@ class _QuizScreenState extends State<QuizScreen> {
       if (mounted) {
         setState(() {
           // print(timer.toPrecision(1));
-          if (timer.toPrecision(1) > 0.8) {
+          if (timer.toPrecision(1) > endTime) {
             t.cancel();
             nextQuestion();
           } else if (cancelTimer) {
             t.cancel();
           } else {
-            timer = (timer + 0.1).toPrecision(1);
+            timer = (timer + increaseTimerByOneSecond).toPrecision(1);
           }
           showTimer = timer.toString();
         });
@@ -47,22 +50,29 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
+
   void nextQuestion() {
     cancelTimer = false;
-    timings.add(timer);
-    timer = 0.0;
+    // print(timer);
+    if(timer == 0.9){
+      timings.add(timer+increaseTimerByOneSecond);
+    }
+    timer = resetValue;
     if (mounted) {
       setState(() {
         // print(colorToShow);
         if (colorToShow == Colors.red) {
-          i = i;
+          currentQuestion = currentQuestion;
           // marks = marks-3;
-          setMarks = marks - 3;
-        } else if (i < 10) {
-          i++;
-        } else if (i == 10) {
+          colorToShow = Colors.white;
+          setMarks = marks - decreaseMarksByThree;
+        } else if (currentQuestion < lastQuestionIndex) {
+          currentQuestion++;
+        } else if (currentQuestion == lastQuestionIndex) {
+          currentQuestion = 1;
           navigateToTheOtherScreen(
               context, ResultScreen(marks: marks, timings: timings));
+              setMarks = resetValue;
           // Navigator.of(context).pushReplacement(
           //     MaterialPageRoute(builder: (context) => ResultScreen(marks: marks, timings : timings)));
         }
@@ -81,8 +91,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void checkAnswer(String k) {
     if (widget.mydata[2]["1"] == widget.mydata[1]["1"][k]) {
-      setMarks = marks + 10;
-      // marks = marks + 10;
+      setMarks = marks + addTenMarks;
+      timings.add(timer);
       colorToShow = right;
     } else {
       colorToShow = wrong;
@@ -93,7 +103,7 @@ class _QuizScreenState extends State<QuizScreen> {
         cancelTimer = true;
       });
     }
-    Timer(const Duration(milliseconds: 500), nextQuestion);
+    Timer(const Duration(milliseconds: 1000), nextQuestion);
   }
 
   @override
@@ -103,7 +113,7 @@ class _QuizScreenState extends State<QuizScreen> {
     controller = VideoPlayerController.asset("assets/75.mp4")
       ..initialize().then((_) {
         setState(() {});
-      });
+      }).onError((error, stackTrace) => showCupertinoDialog(context: context, builder: (context) => AlertDialog(title: const Text("Error"),content: Text(error.toString(),))));
     controller.setLooping(true);
     controller.play();
   }
@@ -111,7 +121,6 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void dispose() {
     controller.dispose();
-    i = 1;
     super.dispose();
   }
 
@@ -147,58 +156,80 @@ class _QuizScreenState extends State<QuizScreen> {
           Column(
             children: [
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Flexible(
                 flex: 4,
                 child: Container(
                     padding: const EdgeInsets.all(15.0),
                     alignment: Alignment.center,
-                    child: Text(
-                      widget.mydata[0][i.toString()],
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            widget.mydata[0][currentQuestion.toString()],
+                            softWrap: true,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
                     )),
               ),
               Expanded(
-                flex: 4,
-                child: Center(
-                  child: 
-                  // CircularPercentIndicator(
-                  //     animation: true,
-                  //     backgroundWidth: 1,
-                  //     animationDuration: 10000,
-                  //     linearGradient: const LinearGradient(
-                  //         colors: [Colors.red, Colors.pink, Colors.purple]),
-                  //     rotateLinearGradient: true,
-                  //     // animateFromLastPercent:  true,
-                  //     // onAnimationEnd: () => nextQuestion,
-                  //     restartAnimation: true,
-                  //     center: Text(
-                  //       (timer * 10 + 1 <= 9)
-                  //           ? "0:0${(timer * 10 + 1) ~/ 1}"
-                  //           : "0:${(timer * 10 + 1) ~/ 1}",
-                  //       style: const TextStyle(
-                  //           fontSize: 36,
-                  //           color: Colors.white,
-                  //           fontWeight: FontWeight.bold),
-                  //     ),
-                  //     radius: 75,
-                  //     lineWidth: 15,
-                  //     backgroundColor: const Color.fromARGB(255, 233, 232, 232),
-                  //     circularStrokeCap: CircularStrokeCap.round,
-                  //     percent: cancelTimer ? 0.0 : 1.0),
-                  MyCircularPercentIndicator(isResultScreen: false, timer: timer, cancelTimer: cancelTimer,)
+                flex: 5,
+                child: FittedBox(
+                  child: Center(
+                    child: 
+                    // CircularPercentIndicator(
+                    //     animation: true,
+                    //     backgroundWidth: 1,
+                    //     animationDuration: 10000,
+                    //     linearGradient: const LinearGradient(
+                    //         colors: [Colors.red, Colors.pink, Colors.purple]),
+                    //     rotateLinearGradient: true,
+                    //     // animateFromLastPercent:  true,
+                    //     // onAnimationEnd: () => nextQuestion,
+                    //     restartAnimation: true,
+                    //     center: Text(
+                    //       (timer * 10 + 1 <= 9)
+                    //           ? 
+                    //           "0:0${(timer * 10 + 1) ~/ 1}"
+                    //           : "0:${(timer * 10 + 1) ~/ 1}",
+                    //       style: const TextStyle(
+                    //           fontSize: 36,
+                    //           color: Colors.white,
+                    //           fontWeight: FontWeight.bold),
+                    //     ),
+                    //     radius: 75,
+                    //     lineWidth: 15,
+                    //     backgroundColor: const Color.fromARGB(255, 233, 232, 232),
+                    //     circularStrokeCap: CircularStrokeCap.round,
+                    //     percent: cancelTimer ? 0.0 : 1.0),
+                    MyCircularPercentIndicator(isResultScreen: false, timer: timer, cancelTimer: cancelTimer,)
+                  ),
+                ),
+              ),
+              SizedBox(
+                child: FittedBox(
+                  child: Text(marks.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30
+                  ),
+                  ),
                 ),
               ),
               Expanded(
-                  flex: 11,
+                  flex: 12,
                   child: GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2),
+                      padding: const EdgeInsets.all(0),
                       itemCount: options.length,
                       itemBuilder: (context, index) {
                         ChoiceButtonModel passModel = ChoiceButtonModel(
@@ -206,7 +237,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             color: optionsColors[index],
                             mydata: widget.mydata,
                             checkAnswer: checkAnswer,
-                            i: i,
+                            currentQuestion: currentQuestion,
                             buttonColor: buttonColor);
                         return ChoiceButton(passModel: passModel
                             //  k: options[index], color: optionsColors[index], mydata: widget.mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor

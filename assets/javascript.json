@@ -1,0 +1,88 @@
+[
+    {
+        "1": "Javascript is an _______ language?",
+        "2": "Which of the following keywords is used to define a variable in javascript",
+        "3": "How can a datatype be declared to be a constant type?",
+        "4": "What keyword is used to check whether a given property is valid or not?",
+        "5": "When an operator’s value is NULL, the typeof returned by the unary operator is:",
+        "6": "What will be the output of the following code snippet?\nvar a = true + true + true * 3;\nprint(a)",
+        "7": "What is the output of the following code snippet?\nprint(NaN === NaN);",
+        "8": "What will be the output of the following code snippet?\nprint(typeof(NaN))",
+        "9": "Which function is used to serialize an object into a JSON string in Javascript?",
+        "10": "Which of the following are closures in Javascript?"
+    },
+    {
+        "1": {
+            "a": "Object-Oriented",
+            "b": "Object-based",
+            "c": "Procedural",
+            "d": "None"
+        },
+        "2": {
+            "a": "var",
+            "b": "let",
+            "c": "Both",
+            "d": "None"
+        },
+        "3": {
+            "a": "const",
+            "b": "var",
+            "c": "let",
+            "d": "constant"
+        },
+        "4": {
+            "a": "in",
+            "b": "is in",
+            "c": "exists",
+            "d": "lies"
+        },
+        "5": {
+            "a": "Boolean",
+            "b": "Undefined",
+            "c": "Object",
+            "d": "Integer"
+        },
+        "6": {
+            "a": "3",
+            "b": "0",
+            "c": "Error",
+            "d": "5"
+        },
+        "7": {
+            "a": "true",
+            "b": "false",
+            "c": "undefined",
+            "d": "Error"
+        },
+        "8": {
+            "a": "Object",
+            "b": "Number",
+            "c": "String",
+            "d": "None"
+        },
+        "9": {
+            "a": "stringify()",
+            "b": "parse()",
+            "c": "convert()",
+            "d": "None"
+        },
+        "10": {
+            "a": "Variables",
+            "b": "Functions",
+            "c": "Objects",
+            "d": "All of the above"
+        }
+    },
+    {
+        "1": "Object-Oriented",
+        "2": "Both",
+        "3": "const",
+        "4": "in",
+        "5": "Object",
+        "6": "5",
+        "7": "false",
+        "8": "Number",
+        "9": "stringify()",
+        "10": "All of the above"
+    }
+]
