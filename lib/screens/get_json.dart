@@ -18,9 +18,7 @@ class GetJson extends StatelessWidget {
         }
 
         if (snapshot.hasError) {
-          return const Center(
-            child: Text('error fetch')
-          );
+          return const Center(child: Text('error fetch'));
         }
 
         List mydata = json.decode(snapshot.data.toString());

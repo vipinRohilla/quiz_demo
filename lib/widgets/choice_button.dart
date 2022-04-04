@@ -125,7 +125,7 @@ class _ChoiceButtonState extends State<ChoiceButton>
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: widget.passModel.color,
+                  color: widget.passModel.circularBoxcolor,
                   shape: BoxShape.circle,
                 ),
                 child: Text(

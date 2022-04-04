@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-// import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:quiz_application/global/global_variables.dart';
+import 'package:quiz_application/global/single_touch_gesture.dart';
 import 'package:quiz_application/model/choice_button_model.dart';
 import 'package:quiz_application/screens/result_screen.dart';
 import 'package:quiz_application/widgets/choice_button.dart';
 import 'package:quiz_application/widgets/circular_percent_indicator.dart';
+import 'package:quiz_application/widgets/single_touch_recognizer.dart';
 import 'package:video_player/video_player.dart';
 
 import '../global/global_variables.dart';
@@ -27,7 +29,6 @@ class _QuizScreenState extends State<QuizScreen> {
   // final mydata;
   // _QuizScreenState(this.mydata);
   List timings = [];
-  
 
   void startTimer() async {
     const onesecond = Duration(milliseconds: 1000);
@@ -39,7 +40,7 @@ class _QuizScreenState extends State<QuizScreen> {
           if (timer.toPrecision(1) > endTime) {
             t.cancel();
             nextQuestion();
-          } else if (cancelTimer) {
+          } else if (cancelTimer){
             t.cancel();
           } else {
             timer = (timer + increaseTimerByOneSecond).toPrecision(1);
@@ -50,12 +51,11 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
-
   void nextQuestion() {
     cancelTimer = false;
     // print(timer);
-    if(timer == 0.9){
-      timings.add(timer+increaseTimerByOneSecond);
+    if (timer == 0.9) {
+      timings.add(timer + increaseTimerByOneSecond);
     }
     timer = resetValue;
     if (mounted) {
@@ -72,7 +72,7 @@ class _QuizScreenState extends State<QuizScreen> {
           currentQuestion = 1;
           navigateToTheOtherScreen(
               context, ResultScreen(marks: marks, timings: timings));
-              setMarks = resetValue;
+          setMarks = resetValue;
           // Navigator.of(context).pushReplacement(
           //     MaterialPageRoute(builder: (context) => ResultScreen(marks: marks, timings : timings)));
         }
@@ -110,10 +110,16 @@ class _QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
     startTimer();
-    controller = VideoPlayerController.asset("assets/75.mp4")
+    controller = VideoPlayerController.asset("assets/backgroundVideo.mp4")
       ..initialize().then((_) {
         setState(() {});
-      }).onError((error, stackTrace) => showCupertinoDialog(context: context, builder: (context) => AlertDialog(title: const Text("Error"),content: Text(error.toString(),))));
+      }).onError((error, stackTrace) => showCupertinoDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+              title: const Text("Error"),
+              content: Text(
+                error.toString(),
+              ))));
     controller.setLooping(true);
     controller.play();
   }
@@ -182,68 +188,73 @@ class _QuizScreenState extends State<QuizScreen> {
                 flex: 5,
                 child: FittedBox(
                   child: Center(
-                    child: 
-                    // CircularPercentIndicator(
-                    //     animation: true,
-                    //     backgroundWidth: 1,
-                    //     animationDuration: 10000,
-                    //     linearGradient: const LinearGradient(
-                    //         colors: [Colors.red, Colors.pink, Colors.purple]),
-                    //     rotateLinearGradient: true,
-                    //     // animateFromLastPercent:  true,
-                    //     // onAnimationEnd: () => nextQuestion,
-                    //     restartAnimation: true,
-                    //     center: Text(
-                    //       (timer * 10 + 1 <= 9)
-                    //           ? 
-                    //           "0:0${(timer * 10 + 1) ~/ 1}"
-                    //           : "0:${(timer * 10 + 1) ~/ 1}",
-                    //       style: const TextStyle(
-                    //           fontSize: 36,
-                    //           color: Colors.white,
-                    //           fontWeight: FontWeight.bold),
-                    //     ),
-                    //     radius: 75,
-                    //     lineWidth: 15,
-                    //     backgroundColor: const Color.fromARGB(255, 233, 232, 232),
-                    //     circularStrokeCap: CircularStrokeCap.round,
-                    //     percent: cancelTimer ? 0.0 : 1.0),
-                    MyCircularPercentIndicator(isResultScreen: false, timer: timer, cancelTimer: cancelTimer,)
-                  ),
+                      child:
+                          // CircularPercentIndicator(
+                          //     animation: true,
+                          //     backgroundWidth: 1,
+                          //     animationDuration: 10000,
+                          //     linearGradient: const LinearGradient(
+                          //         colors: [Colors.red, Colors.pink, Colors.purple]),
+                          //     rotateLinearGradient: true,
+                          //     // animateFromLastPercent:  true,
+                          //     // onAnimationEnd: () => nextQuestion,
+                          //     restartAnimation: true,
+                          //     center: Text(
+                          //       (timer * 10 + 1 <= 9)
+                          //           ?
+                          //           "0:0${(timer * 10 + 1) ~/ 1}"
+                          //           : "0:${(timer * 10 + 1) ~/ 1}",
+                          //       style: const TextStyle(
+                          //           fontSize: 36,
+                          //           color: Colors.white,
+                          //           fontWeight: FontWeight.bold),
+                          //     ),
+                          //     radius: 75,
+                          //     lineWidth: 15,
+                          //     backgroundColor: const Color.fromARGB(255, 233, 232, 232),
+                          //     circularStrokeCap: CircularStrokeCap.round,
+                          //     percent: cancelTimer ? 0.0 : 1.0),
+                          MyCircularPercentIndicator(
+                    isResultScreen: false,
+                    timer: timer,
+                    cancelTimer: cancelTimer,
+                  )),
                 ),
               ),
               SizedBox(
                 child: FittedBox(
-                  child: Text(marks.toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30
-                  ),
+                  child: Text(
+                    marks.toString(),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30),
                   ),
                 ),
               ),
               Expanded(
                   flex: 12,
-                  child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2),
-                      padding: const EdgeInsets.all(0),
-                      itemCount: options.length,
-                      itemBuilder: (context, index) {
-                        ChoiceButtonModel passModel = ChoiceButtonModel(
-                            k: options[index],
-                            color: optionsColors[index],
-                            mydata: widget.mydata,
-                            checkAnswer: checkAnswer,
-                            currentQuestion: currentQuestion,
-                            buttonColor: buttonColor);
-                        return ChoiceButton(passModel: passModel
-                            //  k: options[index], color: optionsColors[index], mydata: widget.mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor
-
-                            );
-                      })
+                  child: SingleTouchRecognizerWidget(
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                        padding: const EdgeInsets.all(0),
+                        itemCount: options.length,
+                        itemBuilder: (context, index) {
+                          ChoiceButtonModel passModel = ChoiceButtonModel(
+                              k: options[index],
+                              circularBoxcolor: optionsColors[index],
+                              mydata: widget.mydata,
+                              checkAnswer: checkAnswer,
+                              currentQuestion: currentQuestion,
+                              buttonColor: buttonColor);
+                          return ChoiceButton(passModel: passModel
+                              //  k: options[index], color: optionsColors[index], mydata: widget.mydata, checkAnswer: checkAnswer, i: i, buttonColor: buttonColor
+                  
+                              );
+                        }),
+                  )
 
                   // GridView(
                   //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -268,3 +279,35 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 }
+// class _SingleTouchRecognizer extends OneSequenceGestureRecognizer {
+
+//   int _p = 0;
+//   @override
+//   void addAllowedPointer(PointerDownEvent event) {
+//     //first register the current pointer so that related events will be handled by this recognizer
+//     startTrackingPointer(event.pointer);
+//     //ignore event if another event is already in progress
+//     if (_p == 0) {
+//       resolve(GestureDisposition.rejected);
+//       _p = event.pointer;
+//     } else {
+//       resolve(GestureDisposition.accepted);
+//     }
+//   }
+//   @override
+//   String get debugDescription => "";
+
+//   @override
+//   void didStopTrackingLastPointer(int pointer) {
+
+//   }
+
+//   @override
+//   void handleEvent(PointerEvent event) {
+//     if (!event.down && event.pointer == _p) {
+//       _p = 0;
+//     }
+//   }
+// }
+
+

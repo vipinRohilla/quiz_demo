@@ -28,7 +28,8 @@ class HomeScreen extends StatelessWidget {
       body: ListView.builder(
           itemCount: _listOftopics.length,
           itemBuilder: (context, index) {
-            return CustomCard(languageName: _listOftopics[index], context: context);
+            return CustomCard(
+                languageName: _listOftopics[index], context: context);
             // customCard(_topics[index], context);
           }),
     );

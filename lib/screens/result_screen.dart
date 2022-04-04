@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_application/global/global_variables.dart';
+import 'package:quiz_application/model/expression.dart';
 import 'package:quiz_application/screens/home_screen.dart';
 import 'package:quiz_application/widgets/circular_percent_indicator.dart';
 import 'package:quiz_application/widgets/list_view_builder.dart';
@@ -24,6 +25,9 @@ class ResultScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                ExpressionWidget(
+                  marks: marks,
+                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -46,33 +50,35 @@ class ResultScreen extends StatelessWidget {
                   height: 25,
                 ),
                 Center(
-                  child: 
-                  // CircularPercentIndicator(
-                  //     animation: true,
-                  //     backgroundWidth: 15,
-                  //     animationDuration: 1000,
-                  //     linearGradient: const LinearGradient(
-                  //         colors: [Colors.red, Colors.pink, Colors.purple]),
-                  //     // rotateLinearGradient: true,
-                  //     // animateFromLastPercent:  true,
-          
-                  //     // restartAnimation: true,
-                  //     center: Text(
-                  //       (marks * 10 + 1 <= 9)
-                  //           ? "${(marks) ~/ 1}"
-                  //           : "${(marks) ~/ 1}",
-                  //       style: const TextStyle(
-                  //           fontSize: 50,
-                  //           color: Colors.black,
-                  //           fontWeight: FontWeight.bold),
-                  //     ),
-                  //     radius: 85,
-                  //     lineWidth: 15,
-                  //     backgroundColor: const Color.fromARGB(255, 233, 232, 232),
-                  //     circularStrokeCap: CircularStrokeCap.round,
-                  //     percent: marks / 100),
-                  MyCircularPercentIndicator(isResultScreen: true, timer: marks,)
-                ),
+                    child:
+                        // CircularPercentIndicator(
+                        //     animation: true,
+                        //     backgroundWidth: 15,
+                        //     animationDuration: 1000,
+                        //     linearGradient: const LinearGradient(
+                        //         colors: [Colors.red, Colors.pink, Colors.purple]),
+                        //     // rotateLinearGradient: true,
+                        //     // animateFromLastPercent:  true,
+
+                        //     // restartAnimation: true,
+                        //     center: Text(
+                        //       (marks * 10 + 1 <= 9)
+                        //           ? "${(marks) ~/ 1}"
+                        //           : "${(marks) ~/ 1}",
+                        //       style: const TextStyle(
+                        //           fontSize: 50,
+                        //           color: Colors.black,
+                        //           fontWeight: FontWeight.bold),
+                        //     ),
+                        //     radius: 85,
+                        //     lineWidth: 15,
+                        //     backgroundColor: const Color.fromARGB(255, 233, 232, 232),
+                        //     circularStrokeCap: CircularStrokeCap.round,
+                        //     percent: marks / 100),
+                        MyCircularPercentIndicator(
+                  isResultScreen: true,
+                  timer: marks,
+                )),
                 const SizedBox(
                   height: 30,
                 ),
@@ -81,25 +87,20 @@ class ResultScreen extends StatelessWidget {
                 // ),
                 // ),
                 Container(
-          
-                  decoration:  BoxDecoration(
-                    color: stripColor,
-                    border: Border(
-                      top: BorderSide(
-                        color: stripColor,
-                        width: 2),
-                      bottom: BorderSide(
-                        color: stripColor,
-                        width: 2),
-                    )
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                      color: stripColor,
+                      border: Border(
+                        top: BorderSide(color: stripColor, width: 2),
+                        bottom: BorderSide(color: stripColor, width: 2),
+                      )),
                   child: const Center(
-                    child: Text("Timings",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize : 20,
-                      fontWeight: FontWeight.bold
-                    ),
+                    child: Text(
+                      "Time taken by each question",
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -107,10 +108,10 @@ class ResultScreen extends StatelessWidget {
                   // mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: MyListViewBuilder(
+                        child: MyListViewBuilder(
                       timings: timings,
                       startingIndex: 0,
-                      )
+                    )
                         // ListView.builder(
                         //   itemCount: timings.length/2 as int,
                         //   itemBuilder: (context, index) =>
@@ -123,7 +124,7 @@ class ResultScreen extends StatelessWidget {
                         //       ),
                         //   )
                         // ),
-                
+
                         ),
                     SizedBox(
                       height: 0,
@@ -133,9 +134,8 @@ class ResultScreen extends StatelessWidget {
                     ),
                     Expanded(
                         child: MyListViewBuilder(
-                      timings: timings,
-                      startingIndex: (timings.length~/2)
-                    )
+                            timings: timings,
+                            startingIndex: (timings.length ~/ 2))
                         // ListView.builder(
                         //   itemCount: timings.length/2 as int,
                         //   itemBuilder: (context, index) =>
@@ -152,10 +152,7 @@ class ResultScreen extends StatelessWidget {
                   ],
                 ),
                 // const SizedBox(height: 100,),
-                Divider(
-                  thickness: 1,
-                  color: stripColor
-                ),
+                Divider(thickness: 1, color: stripColor),
                 ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
@@ -169,7 +166,8 @@ class ResultScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(18.0),
                       child: ShaderMask(
                         shaderCallback: (Rect bounds) {
-                          return gradient.createShader(Offset.zero & bounds.size);
+                          return gradient
+                              .createShader(Offset.zero & bounds.size);
                         },
                         child: const Text(
                           "Go back to the Quiz",
@@ -181,11 +179,34 @@ class ResultScreen extends StatelessWidget {
                   height: 40,
                 )
               ]
-          
+
               // Text('$marks'),
               ),
         ),
       ),
     );
+  }
+}
+
+
+class ExpressionWidget extends StatelessWidget {
+  final double marks;
+  const ExpressionWidget({Key? key, required this.marks}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    ExpressionFactory expressionFactory = ExpressionFactory();
+
+    return 
+    // marks > 70 
+    // ? 
+    expressionFactory.makeExpression(marks);
+    // : 
+    // expressionFactory.makeExpression("Good");
+    // marks >= 70
+    //     ? Text("Great")
+    //     : (marks >= 40 && marks < 70)
+    //         ? Text("Good")
+    //         : Text("Bad");
   }
 }
